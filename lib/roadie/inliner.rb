@@ -174,9 +174,15 @@ module Roadie
       end
 
       def ensure_absolute_url(url, base_path = nil)
-        base, uri = absolute_url_base(base_path), URI.parse(url)
-        if uri.relative? and base
-          base.merge(uri).to_s
+        uri = URI.parse(url)
+
+        if uri.relative?
+          base = absolute_url_base(base_path)
+          if base
+            base.merge(uri).to_s
+          else
+            uri.to_s
+          end
         else
           uri.to_s
         end
